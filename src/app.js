@@ -1,6 +1,9 @@
 const express = require("express");
 const connectDB = require("../src/config/database");
 const app = express();
+const bcrypt = require("bcrypt");
+
+const { validateSignUpData } = require("./utils/validations");
 const User = require("./models/user");
 
 //parsing json req
@@ -8,16 +11,46 @@ app.use(express.json());
 
 app.post("/signUp", async (req, res) => {
   try {
-    //creating an instance of user model
-    const user = new User(req.body);
+    //Validation of data
 
+    validateSignUpData(req);
+
+    const { firstName, lastName, emailId, password } = req.body;
+    //encrypt the password
+
+    const hashedPassowrd = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      firstName,
+      lastName,
+      emailId,
+      password: hashedPassowrd,
+    });
     await user.save();
     res.send("user saved!");
   } catch (err) {
-    console.log("Error saving data", err.message);
+    console.log("Error saving data" + " " + "hey", err.message);
+    res.status(400).send(err.message);
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+
+    const user = await User.find({ emailId });
+
+    const verifiedPassword = bcrypt.compare(password, user.password);
+
+    if (verifiedPassword) {
+      res.send("User verified and Logged in!");
+    } else {
+      res.send("Error logging in. Invalid credentials");
+    }
+  } catch (err) {
+    res.status(500), res.send(err.message);
+  }
+});
 app.get("/allUsers", async (req, res) => {
   try {
     const user = await User.find({});
@@ -28,24 +61,29 @@ app.get("/allUsers", async (req, res) => {
   }
 });
 
-app.put("/updateUser", async (req, res) => {
+app.patch("/updateUser", async (req, res) => {
   try {
-    // Find users where lastName is blank and unset (remove) the lastName field
-    const result = await User.updateMany(
-      { lastName: "Singh " }, // Find users with blank lastName
-      { $unset: { lastName: "" } } // Remove the lastName field
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).send("No users found with a blank last name");
-    }
-
-    res.send(
-      `${result.modifiedCount} user(s) updated by removing lastName field`
-    );
+    const userId = req.body.userId;
+    const data = req.body;
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      lean,
+      g,
+    });
+    console.log(user);
+    res.send("updated!!");
   } catch (err) {
     console.log("Error:", err.message);
     res.status(500).send("Error updating users");
+  }
+});
+
+app.delete("/deleteUser", async (req, res) => {
+  const userID = await req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete({ _id: userID });
+    res.send("User is deleted");
+  } catch (err) {
+    res.send("Something went wrong");
   }
 });
 
