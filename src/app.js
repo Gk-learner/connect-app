@@ -2,12 +2,14 @@ const express = require("express");
 const connectDB = require("../src/config/database");
 const app = express();
 const bcrypt = require("bcrypt");
-
+const cookieParser = require("cookie-parser");
 const { validateSignUpData } = require("./utils/validations");
 const User = require("./models/user");
+const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middlewares/auth");
 
-//parsing json req
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signUp", async (req, res) => {
   try {
@@ -16,20 +18,21 @@ app.post("/signUp", async (req, res) => {
     validateSignUpData(req);
 
     const { firstName, lastName, emailId, password } = req.body;
+
     //encrypt the password
 
-    const hashedPassowrd = await bcrypt.hash(password, 10);
-
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // console.log("hashedPassowrd", hashedPassword);
     const user = new User({
       firstName,
       lastName,
       emailId,
-      password: hashedPassowrd,
+      password: hashedPassword,
     });
     await user.save();
     res.send("user saved!");
   } catch (err) {
-    console.log("Error saving data" + " " + "hey", err.message);
+    // console.log("Error saving data" + " " + "hey", err.message);
     res.status(400).send(err.message);
   }
 });
@@ -38,11 +41,17 @@ app.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
 
-    const user = await User.find({ emailId });
-
-    const verifiedPassword = bcrypt.compare(password, user.password);
-
+    const user = await User.findOne({ emailId });
+    // console.log("user", user);
+    const verifiedPassword = await user.validatePassword(password);
+    // console.log("gagan", verifiedPassword);
     if (verifiedPassword) {
+      //create a JWT token
+
+      const token = await user.getJWT();
+      // console.log(token);
+      res.cookie("token", token);
+
       res.send("User verified and Logged in!");
     } else {
       res.send("Error logging in. Invalid credentials");
@@ -51,11 +60,27 @@ app.post("/login", async (req, res) => {
     res.status(500), res.send(err.message);
   }
 });
-app.get("/allUsers", async (req, res) => {
-  try {
-    const user = await User.find({});
 
-    res.send(user);
+app.get("/profile", userAuth, async (req, res) => {
+  const cookies = req.cookies;
+  // console.log(cookies);
+  const { token } = cookies;
+  //validate the token
+
+  const decodedMessage = await jwt.verify(token, "proCookie2024");
+  // console.log(decodedMessage);
+  const { _id } = decodedMessage;
+  // console.log("user is" + " " + _id);
+  const user = await User.findById({ _id });
+  console.log("user is" + " " + user.firstName);
+  res.send("user is" + " " + _id);
+});
+
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+
+    res.send(user.firstName + " " + 'has sent a connection request');
   } catch (err) {
     res.status(404).send("something went wrong");
   }
@@ -65,14 +90,11 @@ app.patch("/updateUser", async (req, res) => {
   try {
     const userId = req.body.userId;
     const data = req.body;
-    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
-      lean,
-      g,
-    });
-    console.log(user);
+    const user = await User.findByIdAndUpdate({ _id: userId }, data);
+    // console.log(user);
     res.send("updated!!");
   } catch (err) {
-    console.log("Error:", err.message);
+    // console.log("Error:", err.message);
     res.status(500).send("Error updating users");
   }
 });
