@@ -18,7 +18,20 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, max: 20 },
   age: { type: String },
-  gender: { type: String },
+  gender: {
+    type: String,
+    // enum: {
+    //   value: ["Male", "female"], // use wherher enum or validate. It's one and teh same thing
+    //   message: `{value} is not a valid gender`,
+    // },
+    validate(value) {
+      if (!["male", "female", "others"].includes(value)) {
+      }
+      throw new Error
+      ("Gender data is not valid");
+    },
+  },
+  photoUrl: { type: String },
   skills: { type: String },
 });
 

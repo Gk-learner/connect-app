@@ -7,107 +7,121 @@ const { validateSignUpData } = require("./utils/validations");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("./middlewares/auth");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/requests");
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.post("/signUp", async (req, res) => {
-  try {
-    //Validation of data
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
-    validateSignUpData(req);
 
-    const { firstName, lastName, emailId, password } = req.body;
+// app.post("/signUp", async (req, res) => {
+//   try {
+//     //Validation of data
 
-    //encrypt the password
+//     validateSignUpData(req);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log("hashedPassowrd", hashedPassword);
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password: hashedPassword,
-    });
-    await user.save();
-    res.send("user saved!");
-  } catch (err) {
-    // console.log("Error saving data" + " " + "hey", err.message);
-    res.status(400).send(err.message);
-  }
-});
+//     const { firstName, lastName, emailId, password } = req.body;
 
-app.post("/login", async (req, res) => {
-  try {
-    const { emailId, password } = req.body;
+//     //encrypt the password
 
-    const user = await User.findOne({ emailId });
-    // console.log("user", user);
-    const verifiedPassword = await user.validatePassword(password);
-    // console.log("gagan", verifiedPassword);
-    if (verifiedPassword) {
-      //create a JWT token
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     // console.log("hashedPassowrd", hashedPassword);
+//     const user = new User({
+//       firstName,
+//       lastName,
+//       emailId,
+//       password: hashedPassword,
+//     });
+//     await user.save();
+//     res.send("user saved!");
+//   } catch (err) {
+//     // console.log("Error saving data" + " " + "hey", err.message);
+//     res.status(400).send(err.message);
+//   }
+// });
 
-      const token = await user.getJWT();
-      // console.log(token);
-      res.cookie("token", token);
+// app.post("/login", async (req, res) => {
+//   try {
+//     const { emailId, password } = req.body;
 
-      res.send("User verified and Logged in!");
-    } else {
-      res.send("Error logging in. Invalid credentials");
-    }
-  } catch (err) {
-    res.status(500), res.send(err.message);
-  }
-});
+//     const user = await User.findOne({ emailId });
+//     // console.log("user", user);
+//     const verifiedPassword = await user.validatePassword(password);
+//     // console.log("gagan", verifiedPassword);
+//     if (verifiedPassword) {
+//       //create a JWT token
 
-app.get("/profile", userAuth, async (req, res) => {
-  const cookies = req.cookies;
-  // console.log(cookies);
-  const { token } = cookies;
-  //validate the token
+//       const token = await user.getJWT();
+//       // console.log(token);
+//       res.cookie("token", token);
 
-  const decodedMessage = await jwt.verify(token, "proCookie2024");
-  // console.log(decodedMessage);
-  const { _id } = decodedMessage;
-  // console.log("user is" + " " + _id);
-  const user = await User.findById({ _id });
-  console.log("user is" + " " + user.firstName);
-  res.send("user is" + " " + _id);
-});
+//       res.send("User verified and Logged in!");
+//     } else {
+//       res.send("Error logging in. Invalid credentials");
+//     }
+//   } catch (err) {
+//     res.status(500), res.send(err.message);
+//   }
+// });
+// app.post("/logout", (req, res) => {
+//   res
+//     .cookie("token", null, {
+//       expires: new Date(Date.now()),
+//     })
+//     .send("Logout Successfully");
+// });
+// app.get("/profile", userAuth, async (req, res) => {
+//   const cookies = req.cookies;
+//   // console.log(cookies);
+//   const { token } = cookies;
+//   //validate the token
 
-app.post("/sendConnectionRequest", userAuth, async (req, res) => {
-  try {
-    const user = req.user;
+//   const decodedMessage = await jwt.verify(token, "proCookie2024");
+//   // console.log(decodedMessage);
+//   const { _id } = decodedMessage;
+//   // console.log("user is" + " " + _id);
+//   const user = await User.findById({ _id });
+//   console.log("user is" + " " + user.firstName);
+//   res.send("user is" + " " + _id);
+// });
 
-    res.send(user.firstName + " " + 'has sent a connection request');
-  } catch (err) {
-    res.status(404).send("something went wrong");
-  }
-});
+// app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+//   try {
+//     const user = req.user;
 
-app.patch("/updateUser", async (req, res) => {
-  try {
-    const userId = req.body.userId;
-    const data = req.body;
-    const user = await User.findByIdAndUpdate({ _id: userId }, data);
-    // console.log(user);
-    res.send("updated!!");
-  } catch (err) {
-    // console.log("Error:", err.message);
-    res.status(500).send("Error updating users");
-  }
-});
+//     res.send(user.firstName + " " + "has sent a connection request");
+//   } catch (err) {
+//     res.status(404).send("something went wrong");
+//   }
+// });
 
-app.delete("/deleteUser", async (req, res) => {
-  const userID = await req.body.userId;
-  try {
-    const user = await User.findByIdAndDelete({ _id: userID });
-    res.send("User is deleted");
-  } catch (err) {
-    res.send("Something went wrong");
-  }
-});
+// app.patch("/updateUser", async (req, res) => {
+//   try {
+//     const userId = req.body.userId;
+//     const data = req.body;
+//     const user = await User.findByIdAndUpdate({ _id: userId }, data);
+//     // console.log(user);
+//     res.send("updated!!");
+//   } catch (err) {
+//     // console.log("Error:", err.message);
+//     res.status(500).send("Error updating users");
+//   }
+// });
+
+// app.delete("/deleteUser", async (req, res) => {
+//   const userID = await req.body.userId;
+//   try {
+//     const user = await User.findByIdAndDelete({ _id: userID });
+//     res.send("User is deleted");
+//   } catch (err) {
+//     res.send("Something went wrong");
+//   }
+// });
 
 connectDB()
   .then(() => {
