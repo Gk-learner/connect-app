@@ -4,12 +4,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
-  firstName: { type: String, required: true, minLength: 5, maxLength: 15 },
+  firstName: {
+    type: String,
+    required: true,
+    minLength: 5,
+    index: true, //same as unique
+    maxLength: 15,
+  },
   lastName: { type: String },
   emailId: {
     type: String,
     required: true,
-    unique: true,
+    unique: true, //mongo db craetes index automatically if its unique, for better seacrh
+
     validate(value) {
       if (!validator.isEmail(value)) {
         throw new error("Invalid email address" + value);
@@ -27,8 +34,7 @@ const userSchema = new mongoose.Schema({
     validate(value) {
       if (!["male", "female", "others"].includes(value)) {
       }
-      throw new Error
-      ("Gender data is not valid");
+      throw new Error("Gender data is not valid");
     },
   },
   photoUrl: { type: String },
