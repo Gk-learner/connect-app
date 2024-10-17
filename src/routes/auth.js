@@ -41,7 +41,7 @@ authRouter.post("/login", async (req, res) => {
     const { emailId, password } = req.body;
 
     const user = await User.findOne({ emailId });
-    console.log(user);
+    // console.log(user);
     const verifiedPassword = await user.validatePassword(password);
     if (verifiedPassword) {
       const token = await user.getJWT();
