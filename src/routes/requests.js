@@ -74,9 +74,12 @@ requestsRouter.post(
   userAuth,
   async (req, res) => {
     try {
+      const loggedInUser = req.user;
+      
       const { requestId, status } = req.params;
       const allowedStatus = ["accepted", "rejected"];
-      const loggedInUser = req.user;
+
+      console.log(loggedInUser);
       if (!allowedStatus.includes(status)) {
         return res
           .status(400)
@@ -88,7 +91,10 @@ requestsRouter.post(
         toUserId: loggedInUser._id,
         status: "interested",
       });
+
       if (!connectionRequest) {
+        console.log("gagan", connectionRequest);
+
         return res
           .status(404)
           .json({ message: "Connection request not found." });
@@ -102,10 +108,11 @@ requestsRouter.post(
 
       // Update the status of the connection request
       connectionRequest.status = status;
-      await connectionRequest.save();
+      const data = await connectionRequest.save();
+      console.log(data);
 
       // Send a success response
-      res.json({ message: "Connection request has been " + status + "." });
+      res.json({ message: "Connection request has been " + status, data });
     } catch (err) {
       // Catch and handle any errors
       res
