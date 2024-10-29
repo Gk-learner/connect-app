@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 const NavBar = () => {
     return (
         <div className="navbar bg-base-300">
@@ -31,7 +32,7 @@ const NavBar = () => {
                             <a>Settings</a>
                         </li>
                         <li>
-                            <a>Logout</a>
+                            <Link to="Login">Login</Link>
                         </li>
                     </ul>
                 </div>
