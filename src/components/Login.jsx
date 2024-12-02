@@ -1,10 +1,15 @@
 import {useState} from "react";
+import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import PropTypes from "prop-types";
+import {addUser} from "../utils/userSlice";
+import {BASE_URL} from "../utils/constants/index";
 
 const Login = () => {
-    const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+    const [userName, setUserName] = useState("anahad1@gmail.com");
+    const [password, setPassword] = useState("anahadgmail");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         try {
@@ -12,26 +17,31 @@ const Login = () => {
                 emailId: userName,
                 password: password,
             };
-            console.log(obj);
 
-            const response = await fetch("http://localhost:4000/login", {
+            const response = await fetch(`${BASE_URL}login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify(obj),
             });
-            const res = await response;
-            if (res) {
-                navigate("/profile");
-            } else {
-                alert("Handle error");
-                console.log(res.body);
+
+            const res = await response.json();
+            console.log(res);
+            if (res._id) {
+                console.log("kiki");
+                // Check if response indicates success
+                dispatch(addUser(res));
+                // setLogout(true);
+                navigate("/feed");
             }
         } catch (err) {
-            console.log(err.message);
+            console.error("Error logging in:", err);
+            alert("An error occurred. Please try again.");
         }
     };
+
     return (
         <div className="w-80 mt-12 mx-auto">
             <h1 className="text-center mb-10 ">Login</h1>
@@ -68,20 +78,21 @@ const Login = () => {
                 <input
                     type="password"
                     className="grow"
+                    placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </label>
-            <button
-                className="btn justify-center"
-                onClick={() => {
-                    handleLogin();
-                }}
-            >
+            <button className="btn justify-center" onClick={handleLogin}>
                 Login
             </button>
         </div>
     );
+};
+
+// Define PropTypes for the component
+Login.propTypes = {
+    setLogout: PropTypes.func.isRequired,
 };
 
 export default Login;
