@@ -16,7 +16,7 @@ authRouter.post("/signUp", async (req, res) => {
 
     validateSignUpData(req);
 
-    const { firstName, lastName, emailId, password } = req.body;
+    const { firstName, lastName, emailId, password, gender, age, skills, photoUrl } = req.body;
 
     //encrypt the password
 
@@ -27,6 +27,10 @@ authRouter.post("/signUp", async (req, res) => {
       lastName,
       emailId,
       password: hashedPassword,
+      gender,
+      age,
+      skills,
+      photoUrl
     });
     await user.save();
     res.send("user saved!");
@@ -47,12 +51,12 @@ authRouter.post("/login", async (req, res) => {
       const token = await user.getJWT();
       res.cookie("token", token);
 
-      res.send("User verified and Logged in!");
+      res.send(user);
     } else {
       res.send("Error logging in. Invalid credentials");
     }
   } catch (err) {
-    res.status(500), res.send(err.message);
+    res.status(500).send(err.message);
   }
 });
 

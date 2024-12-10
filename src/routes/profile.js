@@ -10,29 +10,31 @@ const app = express();
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
   const cookies = req.cookies;
   const { token } = cookies;
-  //validate the token
   const decodedMessage = await jwt.verify(token, "proCookie2024");
   const { _id } = decodedMessage;
   const user = await User.findById({ _id });
-  res.send("user is" + " " + _id);
+  res.send(user);
 });
 
 profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   try {
     if (!validateEditprofileData(req)) {
-      throw new Error("Invalid edit Request");
+      console.log("Validation Failed: Invalid Edit Request");
+      throw new Error("Invalid edit request: Check allowed fields");
     }
 
     const loggedUser = req.user;
-    console.log(loggedUser);
-    Object.keys(req.body).forEach((key) => (loggedUser[key] = req.body[key]));
-    await loggedUser.save();
-    console.log(loggedUser);
-    // res.send("Profile updated successfully");
-    res.json({ message: "Profile updated successfully", data: loggedUser});
+    console.log("Logged User Before Update:", loggedUser);
 
+    Object.keys(req.body).forEach((key) => (loggedUser[key] = req.body[key]));
+
+    await loggedUser.save();
+
+    console.log("Logged User After Update:", loggedUser);
+    res.json({ message: "Profile updated successfully", data: loggedUser });
   } catch (err) {
-    res.status(400).send(err.message);
+    console.error("Error:", err.message);
+    res.status(400).send({ error: err.message });
   }
 });
 

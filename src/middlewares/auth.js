@@ -6,9 +6,9 @@ const userAuth = async (req, res, next) => {
     //Read the token from the req cookies
     const { token } = req.cookies;
     //validate the token
-    // if (!token) {
-    //     throw
-    // }
+    if (!token) {
+      return res.status(401).send("Please login");
+    }
     const decodedObj = await jwt.verify(token, "proCookie2024");
 
     const { _id } = decodedObj;

@@ -19,7 +19,7 @@ requestsRouter.post(
       if (!allowedStatus.includes(status)) {
         return res
           .status(400)
-          .json({ message: "Invalid status type: " + status });
+          .json({ message: "Invalid status type::: " + status });
       }
 
       // Prevent users from sending connection requests to themselves
@@ -69,13 +69,14 @@ requestsRouter.post(
     }
   }
 );
+
 requestsRouter.post(
   "/request/review/:status/:requestId",
   userAuth,
   async (req, res) => {
     try {
       const loggedInUser = req.user;
-      
+
       const { requestId, status } = req.params;
       const allowedStatus = ["accepted", "rejected"];
 

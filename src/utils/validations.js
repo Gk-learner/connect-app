@@ -1,5 +1,5 @@
 const validateSignUpData = (req) => {
-  const { firstName, lastName, userId, password } = req.body;
+  const { firstName, lastName, userId, password, gender } = req.body;
 
   if (!firstName || !lastName) {
     throw new error("enter user name");
@@ -12,17 +12,21 @@ const validateEditprofileData = (req) => {
   const allowedEditFields = [
     "firstName",
     "lastName",
-    "emailId",
-    // "photoUrl",
-    "about",
-    // "skills",
+    "age",
+    "gender",
+    "photoUrl",
+    "skills",
   ];
 
+  if (!req.body || Object.keys(req.body).length === 0) {
+    console.log("Request body is empty or invalid");
+    return false;
+  }
   const isEditAllowed = Object.keys(req.body).every((field) =>
     allowedEditFields.includes(field)
   );
-
+  console.log(isEditAllowed);
   return isEditAllowed;
 };
 
-module.exports = { validateSignUpData,validateEditprofileData };
+module.exports = { validateSignUpData, validateEditprofileData };
