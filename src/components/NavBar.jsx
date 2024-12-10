@@ -8,6 +8,7 @@ import {removeUser} from "../utils/userSlice";
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);
+    console.log(user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -18,9 +19,11 @@ const NavBar = () => {
 
                 credentials: "include",
             });
-            navigate("/login");
             dispatch(removeUser(user));
-            console.log(user);
+            localStorage.removeItem("user"); // Clear user from localStorage
+            navigate("/login");
+
+            // console.log(user);
         } catch (err) {
             console.log(err);
         }
@@ -33,9 +36,9 @@ const NavBar = () => {
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                {user && (
+                {user ? (
                     <>
-                        <p>Welcome {user.firstName}</p>
+                        <p>Welcome {user?.firstName}</p>
                         <div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                 <>
@@ -64,6 +67,10 @@ const NavBar = () => {
                             </ul>
                         </div>
                     </>
+                ) : (
+                    <Link to="/login" className="btn">
+                        Login
+                    </Link>
                 )}
             </div>
         </div>

@@ -7,7 +7,8 @@ import Card from "./Card";
 const Feed = () => {
     const dispatch = useDispatch();
     const feed = useSelector((store) => store.feed);
-    console.log(feed);
+    // const user = useSelector((store) => store.user);
+    // console.log(user);
     const fetchUser = async () => {
         try {
             const response = await fetch(`${BASE_URL}user/feed`, {
@@ -19,7 +20,7 @@ const Feed = () => {
             });
 
             const res = await response.json();
-            console.log(res);
+            // console.log(res);
             dispatch(addFeed(res));
         } catch (err) {
             console.log(err.message);

@@ -1,16 +1,17 @@
 import {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import PropTypes from "prop-types";
 import {addUser} from "../utils/userSlice";
 import {BASE_URL} from "../utils/constants/index";
 
 const Login = () => {
-    const [userName, setUserName] = useState("anahad1@gmail.com");
-    const [password, setPassword] = useState("anahadgmail");
+    const [userName, setUserName] = useState("pks@gmail.com");
+    const [password, setPassword] = useState("pksgmailcom");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector((store) => store.user);
 
+    console.log(user);
     const handleLogin = async () => {
         try {
             const obj = {
@@ -28,12 +29,10 @@ const Login = () => {
             });
 
             const res = await response.json();
+
             console.log(res);
             if (res._id) {
-                console.log("kiki");
-                // Check if response indicates success
                 dispatch(addUser(res));
-                // setLogout(true);
                 navigate("/feed");
             }
         } catch (err) {
@@ -91,8 +90,8 @@ const Login = () => {
 };
 
 // Define PropTypes for the component
-Login.propTypes = {
-    setLogout: PropTypes.func.isRequired,
-};
+// Login.propTypes = {
+//     setLogout: PropTypes.func.isRequired,
+// };
 
 export default Login;

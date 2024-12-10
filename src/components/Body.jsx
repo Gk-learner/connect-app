@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -8,11 +8,14 @@ import {addUser} from "../utils/userSlice";
 import {useSelector} from "react-redux";
 
 const Body = () => {
-    // const [logout, setLogout] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userData = useSelector((store) => store.user);
+
     const fetchUser = async () => {
+        if (userData) {
+            return;
+        }
         try {
             const response = await fetch(`${BASE_URL}profile/view`, {
                 method: "GET",
@@ -24,6 +27,7 @@ const Body = () => {
 
             const res = await response.json();
             console.log(res);
+            dispatch(addUser(res));
         } catch (err) {
             if (err.status === 401) {
                 navigate("/login");
@@ -31,9 +35,7 @@ const Body = () => {
         }
     };
     useEffect(() => {
-        if (!userData) {
-            fetchUser();
-        }
+        fetchUser();
     }, []);
     return (
         <div>
