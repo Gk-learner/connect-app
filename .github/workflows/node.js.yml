@@ -1,4 +1,4 @@
-name: Build and deploy connect APP
+name: Build and deploy connect App
 
 on:
     push:
