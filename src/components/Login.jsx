@@ -5,8 +5,8 @@ import {addUser} from "../utils/userSlice";
 import {BASE_URL} from "../utils/constants/index";
 
 const Login = () => {
-    const [userName, setUserName] = useState("pks@gmail.com");
-    const [password, setPassword] = useState("pksgmailcom");
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((store) => store.user);
@@ -19,6 +19,7 @@ const Login = () => {
                 password: password,
             };
 
+            console.log(obj);
             const response = await fetch(`${BASE_URL}login`, {
                 method: "POST",
                 headers: {
