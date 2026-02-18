@@ -5,13 +5,11 @@ import {addUser} from "../utils/userSlice";
 import {BASE_URL} from "../utils/constants/index";
 
 const Login = () => {
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState("");
+    const [userName, setUserName] = useState('gkour@gmail.com');
+    const [password, setPassword] = useState("gkour");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((store) => store.user);
-
-    console.log(user);
     const handleLogin = async () => {
         try {
             const obj = {
@@ -19,7 +17,6 @@ const Login = () => {
                 password: password,
             };
 
-            console.log(obj);
             const response = await fetch(`${BASE_URL}login`, {
                 method: "POST",
                 headers: {
@@ -31,14 +28,14 @@ const Login = () => {
 
             const res = await response.json();
 
-            console.log(res);
-            if (res._id) {
+                            navigate("/feed");
+
+            // if (res._id) {
                 dispatch(addUser(res));
                 navigate("/feed");
-            }
+            // }
         } catch (err) {
             console.error("Error logging in:", err);
-            alert("An error occurred. Please try again.");
         }
     };
 
