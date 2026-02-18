@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("../src/config/database");
 const app = express();
+const cors = require("cors");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const { validateSignUpData } = require("./utils/validations");
@@ -10,6 +11,12 @@ const { userAuth } = require("./middlewares/auth");
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
   try {
@@ -18,11 +25,8 @@ app.post("/signUp", async (req, res) => {
     validateSignUpData(req);
 
     const { firstName, lastName, emailId, password } = req.body;
-
     //encrypt the password
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log("hashedPassowrd", hashedPassword);
     const user = new User({
       firstName,
       lastName,
@@ -44,20 +48,20 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ emailId });
     // console.log("user", user);
     const verifiedPassword = await user.validatePassword(password);
-    // console.log("gagan", verifiedPassword);
+    // console.log("gagan", verifiedPassord);
     if (verifiedPassword) {
       //create a JWT token
 
       const token = await user.getJWT();
-      // console.log(token);
+      console.log(token);
       res.cookie("token", token);
 
-      res.send("User verified and Logged in!");
-    } else {
+return res.json(user);   
+   } else {
       res.send("Error logging in. Invalid credentials");
     }
   } catch (err) {
-    res.status(500), res.send(err.message);
+    res.status(500).send(err.message);
   }
 });
 
@@ -108,6 +112,7 @@ app.delete("/deleteUser", async (req, res) => {
     res.send("Something went wrong");
   }
 });
+
 
 connectDB()
   .then(() => {
