@@ -7,7 +7,7 @@ const User = require("../models/user");
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-    // console.log(loggedInUser);
+    console.log(loggedInUser);
 
     const connectionRequest = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
