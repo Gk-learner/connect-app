@@ -19,6 +19,7 @@ app.use(cors({
 app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
+  console.log("req body", req);
   try {
     //Validation of data
 
@@ -36,7 +37,7 @@ app.post("/signUp", async (req, res) => {
     await user.save();
     res.send("user saved!");
   } catch (err) {
-    // console.log("Error saving data" + " " + "hey", err.message);
+    console.log("Error saving data" + " " + "hey", err.message);
     res.status(400).send(err.message);
   }
 });
@@ -77,12 +78,21 @@ app.get("/profile", userAuth, async (req, res) => {
   // console.log("user is" + " " + _id);
   const user = await User.findById({ _id });
   console.log("user is" + " " + user.firstName);
-  res.send("user is" + " " + _id);
+  res.send("user is" + " " + user.firstName);
+});
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (err) {
+    res.status(500).send("Error fetching feed");
+  }
 });
 
 app.post("/sendConnectionRequest", userAuth, async (req, res) => {
   try {
     const user = req.user;
+    console.log("user is" + " " + user.firstName);
 
     res.send(user.firstName + " " + 'has sent a connection request');
   } catch (err) {
@@ -95,7 +105,7 @@ app.patch("/updateUser", async (req, res) => {
     const userId = req.body.userId;
     const data = req.body;
     const user = await User.findByIdAndUpdate({ _id: userId }, data);
-    // console.log(user);
+    console.log(user);
     res.send("updated!!");
   } catch (err) {
     // console.log("Error:", err.message);
