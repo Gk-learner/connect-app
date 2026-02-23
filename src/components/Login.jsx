@@ -10,6 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((store) => store.user);
+    console.log(user);
     const handleLogin = async () => {
         try {
             const obj = {
@@ -30,10 +31,10 @@ const Login = () => {
 
                             navigate("/feed");
 
-            // if (res._id) {
+            if (res._id) {
                 dispatch(addUser(res));
                 navigate("/feed");
-            // }
+            }
         } catch (err) {
             console.error("Error logging in:", err);
         }
