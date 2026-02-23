@@ -92,7 +92,6 @@ app.get("/feed", async (req, res) => {
 app.post("/sendConnectionRequest", userAuth, async (req, res) => {
   try {
     const user = req.user;
-    console.log("user is" + " " + user.firstName);
 
     res.send(user.firstName + " " + 'has sent a connection request');
   } catch (err) {
@@ -105,7 +104,7 @@ app.patch("/updateUser", async (req, res) => {
     const userId = req.body.userId;
     const data = req.body;
     const user = await User.findByIdAndUpdate({ _id: userId }, data);
-    console.log(user);
+    // console.log(user);
     res.send("updated!!");
   } catch (err) {
     // console.log("Error:", err.message);

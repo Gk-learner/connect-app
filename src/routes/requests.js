@@ -11,6 +11,8 @@ requestRouter.post(
   "/request/send/:status/:toUserId",
   userAuth,
   async (req, res) => {
+    console.log("PARAMS:", req.params);
+console.log("USER:", req.user);
     try {
       const fromUserId = req.user._id;
       const toUserId = req.params.toUserId;
@@ -59,7 +61,6 @@ requestRouter.post(
           req.user.firstName + " is " + status + " in " + toUser.firstName,
         data,
       });
-      console.log("Connection Request Sent!!", req.user.firstName + " is " + status + " in " + toUser.firstName);
     } catch (err) {
       res.status(400).send("ERROR: " + err.message);
     }
