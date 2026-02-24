@@ -19,7 +19,6 @@ app.use(cors({
 app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
-  console.log("req body", req);
   try {
     //Validation of data
 
@@ -45,7 +44,6 @@ app.post("/signUp", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
-
     const user = await User.findOne({ emailId });
     // console.log("user", user);
     const verifiedPassword = await user.validatePassword(password);
@@ -54,7 +52,6 @@ app.post("/login", async (req, res) => {
       //create a JWT token
 
       const token = await user.getJWT();
-      console.log(token);
       res.cookie("token", token);
 
 return res.json(user);   
@@ -67,19 +64,17 @@ return res.json(user);
 });
 
 app.get("/profile", userAuth, async (req, res) => {
+  console.log("profile route is hit");
   const cookies = req.cookies;
-  // console.log(cookies);
   const { token } = cookies;
-  //validate the token
-
   const decodedMessage = await jwt.verify(token, "proCookie2024");
-  // console.log(decodedMessage);
   const { _id } = decodedMessage;
-  // console.log("user is" + " " + _id);
+  console.log("user is" + " " + _id);
   const user = await User.findById({ _id });
   console.log("user is" + " " + user.firstName);
   res.send("user is" + " " + user.firstName);
 });
+
 app.get("/feed", async (req, res) => {
   try {
     const users = await User.find({});
@@ -89,10 +84,10 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+app.post("/requests", userAuth, async (req, res) => {
   try {
     const user = req.user;
-
+        const { emailId, password } = req.body;
     res.send(user.firstName + " " + 'has sent a connection request');
   } catch (err) {
     res.status(404).send("something went wrong");

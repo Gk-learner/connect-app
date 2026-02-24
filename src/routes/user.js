@@ -1,4 +1,4 @@
-aconst express = require("express");
+const express = require("express");
 const userRouter = express.Router();
 
 const { userAuth } = require("../middlewares/auth");
@@ -9,7 +9,7 @@ const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
 
 // Get all the pending connection request for the loggedIn user
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
-  try {12345678900
+  try {
     const loggedInUser = req.user;
 
     const connectionRequests = await ConnectionRequest.find({
@@ -40,7 +40,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
 
-    console.log(connectionRequests);
+    console.log('...',connectionRequests);
 
     const data = connectionRequests.map((row) => {
       if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
