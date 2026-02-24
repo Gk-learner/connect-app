@@ -9,29 +9,28 @@ const Card = (feed) => {
         return <p>No data available</p>;
     }
 
-    const sendInterest = async (cardData) => {
-        // console.log("Selected Card:", cardData);
-
+    const sendInterest = async (cardData, status) => {
+        console.log("Selected Card:", status);
         const user = feed.feed.find((a) => a._id === cardData._id)?._id;
-        // console.log(user);
+        console.log(user);
         if (!user) {
             console.error("User not found in feed");
             return;
         }
 
         try {
-            const response = await fetch(`${BASE_URL}request/send`, {
+            const response = await fetch(`${BASE_URL}request/send/${status}/${user}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    status: "interested",
+                    status: status,
                     userId: user,
                 }),
                 credentials: "include",
             });
-
+console.log("API Response Status:", response.status);
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
@@ -48,7 +47,7 @@ const Card = (feed) => {
     };
 
     return (
-        <div className="flex flex-wrap justify-center gap-4 mt-4">
+        <div className="flex flex-wrap justify-between gap-4 m-4">
             {feed.feed.map((cardData) => (
                 <div className="card bg-base-100 w-1/4 shadow-xl" key={cardData._id}>
                     <figure>
@@ -61,8 +60,10 @@ const Card = (feed) => {
                     <div className="card-body">
                         <h2 className="card-title">{cardData.firstName || "Unnamed User"}</h2>
                         <div className="card-actions justify-end">
-                            <button className="btn btn-warning">Ignore</button>
-                            <button className="btn btn-success" onClick={() => sendInterest(cardData)}>
+                            <button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>
+                                Ignore
+                            </button>
+                            <button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
                                 Interested
                             </button>
                         </div>

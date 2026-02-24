@@ -11,7 +11,7 @@ const Feed = () => {
     console.log(user);
     const fetchUser = async () => {
         try {
-            const response = await fetch(`${BASE_URL}user/feed`, {
+            const response = await fetch(`${BASE_URL}feed`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

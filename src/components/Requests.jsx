@@ -1,9 +1,8 @@
 
-import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeRequest } from "../utils/requestSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
@@ -11,23 +10,41 @@ const Requests = () => {
 
   const reviewRequest = async (status, _id) => {
     try {
-      const res = axios.post(
+      const response = fetch(
         BASE_URL + "/request/review/" + status + "/" + _id,
-        {},
-        { withCredentials: true }
+        {
+          method: "post",
+          credentials: "include",
+        }
       );
+         const res = await response.json();
+            console.log("API Response:", res);
       dispatch(removeRequest(_id));
-    } catch (err) {}
+    } catch (err) {
+        console.error("Error:", err.message);
+                alert("Failed to update profile.");
+    }
   };
+  // const response = await fetch(`${BASE_URL}profile/edit`, {
+  //               method: "PATCH",
+  //               credentials: "include",
+  //               headers: {
+  //                   "Content-Type": "application/json",
+  //               },
+  //               body: JSON.stringify(payload),
+  //           });
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/user/requests/received", {
+      const res = await fetch(BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
 
-      dispatch(addRequests(res.data.data));
-    } catch (err) {}
+      const data = await res.json();
+      dispatch(addRequests(data.data));
+    } catch (err) {
+      console.error("Error fetching requests:", err);
+    }
   };
 
   useEffect(() => {
