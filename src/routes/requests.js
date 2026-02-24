@@ -8,11 +8,9 @@ const User = require("../models/user");
 // const sendEmail = require("../utils/sendEmail");
 
 requestRouter.post(
-  "/request/send/:status/:toUserId",
+  "/send/:status/:toUserId",
   userAuth,
   async (req, res) => {
-    console.log("PARAMS:", req.params);
-console.log("USER:", req.user);
     try {
       const fromUserId = req.user._id;
       const toUserId = req.params.toUserId;

@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("../src/config/database");
 const app = express();
+const requestRouter = require("./routes/requests");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
@@ -16,6 +17,7 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+app.use("/request", requestRouter);
 app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
