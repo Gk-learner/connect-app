@@ -9,6 +9,7 @@ const { validateSignUpData } = require("./utils/validations");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("./middlewares/auth");
+const userRouter = require("./routes/user");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,6 +19,7 @@ app.use(cors({
   credentials: true
 }));
 app.use("/request", requestRouter);
+app.use("/user",userRouter)
 app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
@@ -86,7 +88,7 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-app.post("/requests", userAuth, async (req, res) => {
+app.post("/request", userAuth, async (req, res) => {
   try {
     const user = req.user;
         const { emailId, password } = req.body;

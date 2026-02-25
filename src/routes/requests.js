@@ -66,7 +66,7 @@ requestRouter.post(
 );
 
 requestRouter.post(
-  "/request/review/:status/:requestId",
+  "/review/:status/:requestId",
   userAuth,
   async (req, res) => {
     try {
