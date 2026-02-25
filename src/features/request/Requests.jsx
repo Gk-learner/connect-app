@@ -1,7 +1,7 @@
 
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests, removeRequest } from "../utils/requestSlice";
+import { addRequests, removeRequest } from "./requestSlice";
 import { useEffect } from "react";
 
 const Requests = () => {

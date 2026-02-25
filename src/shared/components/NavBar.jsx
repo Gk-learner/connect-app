@@ -1,10 +1,11 @@
+import React from "react"; 
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {BASE_URL} from "../utils/constants/index";
+import {BASE_URL} from "../../utils/constants/index";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {removeUser} from "../utils/userSlice";
+import {removeUser} from "../../features/auth/userSlice";
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);

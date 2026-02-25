@@ -1,14 +1,13 @@
-import {useEffect} from "react";
-import {BASE_URL} from "../utils/constants";
+import React, {useEffect} from "react";
+import {BASE_URL} from "../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
-import {addFeed} from "../utils/feedSlice";
-import Card from "./Card";
+import {addFeed} from "./feedSlice";
+import Card from "../../shared/components/Card";
 
 const Feed = () => {
     const dispatch = useDispatch();
     const feed = useSelector((store) => store.feed);
     const user = useSelector((store) => store.user);
-    console.log(user);
     const fetchUser = async () => {
         try {
             const response = await fetch(`${BASE_URL}feed`, {

@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./userSlice";
-import feedReducer from "./feedSlice";
-import connectionReducer from "./connectionSlice"
+import userReducer from "../features/auth/userSlice";
+import feedReducer from "../features/feed/feedSlice";
+import connectionReducer from "../features/connection/connectionSlice"
 /* eslint-disable no-underscore-dangle */
 
 export const appStore = configureStore({

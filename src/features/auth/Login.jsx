@@ -1,12 +1,12 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {addUser} from "../utils/userSlice";
-import {BASE_URL} from "../utils/constants/index";
+import {addUser} from "./userSlice";
+import {BASE_URL} from "../../utils/constants/index";
 
 const Login = () => {
-    const [userName, setUserName] = useState('gkour@gmail.com');
-    const [password, setPassword] = useState("gkour");
+    const [userName, setUserName] = useState('pkour@gmail.com');
+    const [password, setPassword] = useState("pkour");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((store) => store.user);
@@ -29,7 +29,6 @@ const Login = () => {
 
             const res = await response.json();
 
-                            navigate("/feed");
 
             if (res._id) {
                 dispatch(addUser(res));
@@ -41,7 +40,8 @@ const Login = () => {
     };
 
     return (
-        <div className="w-80 mt-12 mx-auto">
+        <div className="w-80 mt-12 mx-auto" 
+        >
             <h1 className="text-center mb-10 ">Login</h1>
             <label className="input input-bordered flex items-center gap-2">
                 <svg

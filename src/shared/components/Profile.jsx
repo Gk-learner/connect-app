@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addUser} from "../utils/userSlice";
-import {BASE_URL} from "../utils/constants/index";
+import {addUser} from "../../features/auth/userSlice";
+import {BASE_URL} from "../../utils/constants/index";
 
 const Profile = () => {
     const user = useSelector((store) => store.user);

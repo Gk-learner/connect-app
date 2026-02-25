@@ -1,8 +1,12 @@
-import {BASE_URL} from "../utils/constants";
+import React from "react"; 
+import {BASE_URL} from "../../utils/constants";
 import {useDispatch} from "react-redux";
-import {addUser} from "../utils/userSlice";
+import {addUser} from "../../features/auth/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Card = (feed) => {
+        const navigate = useNavigate();
+    
     const dispatch = useDispatch();
 
     if (!feed?.feed?.length) {
@@ -10,37 +14,37 @@ const Card = (feed) => {
     }
 
     const sendInterest = async (cardData, status) => {
-        console.log("Selected Card:", status);
         const user = feed.feed.find((a) => a._id === cardData._id)?._id;
-        console.log(user);
         if (!user) {
             console.error("User not found in feed");
             return;
         }
 
         try {
-            const response = await fetch(`${BASE_URL}request/send/${status}/${user}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    status: status,
-                    userId: user,
-                }),
-                credentials: "include",
-            });
-console.log("API Response Status:", response.status);
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
+  const response = await fetch(
+    `${BASE_URL}request/send/${status}/${user}`,
+    {
+      method: "POST",
+      credentials: "include",   
+    }
+  );
+  if (!response.ok) {
+        alert('request already Sent')
 
-            const res = await response.json();
-            console.log("API Response:", res);
-            dispatch(addUser(res.data));
-        } catch (err) {
+    throw new Error(`Error: ${response.status}`);
+  }
+  if (response.ok){
+    alert('request Sent')
+  }
+
+  const res = await response.json();
+  console.log("API Response:", res);
+  dispatch(addUser(res.data));
+  
+}  catch (err) {
             console.error("Failed to send interest:", err);
             if (err.message.includes("401")) {
+                navigate("./login")
                 // Handle unauthorized error (e.g., navigate to login page)
             }
         }

@@ -1,8 +1,9 @@
+import React from "react"; 
 import {useNavigate} from "react-router-dom";
-import {BASE_URL} from "../utils/constants";
+import {BASE_URL} from "../../utils/constants";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
-import { addConnections } from "../utils/connectionSlice";
+import { addConnections } from "./connectionSlice";
 
 const Connections = () => {
     const dispatch = useDispatch();

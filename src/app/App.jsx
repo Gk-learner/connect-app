@@ -1,15 +1,23 @@
-import Body from "./components/Body.jsx";
-import Login from "./components/Login.jsx";
-import Profile from "./components/Profile.jsx";
+import Body from "../shared/components/MainLayout.jsx";
+import React from "react"; 
+import Login from "../features/auth/Login.jsx";
+import Profile from "../shared/components/Profile.jsx";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {Provider} from "react-redux";
-import appStore from "./utils/appStore.js";
-import Feed from "./components/Feed.jsx";
-import Connections from "./components/Connections.jsx";
-import Requests from "./components/Requests.jsx";
+import appStore from "../utils/appStore.js";
+import Feed from "../features/feed/Feed.jsx";
+import Connections from "../features/connection/Connections.jsx";
+import Requests from "../features/request/Requests.jsx";
 function App() {
     return (
         <>
+        <div  
+    //     style={{
+    //     backgroundImage: "url('/homepagePic.png')",
+    //     backgroundSize: "cover",
+    //     backgroundPosition: "center",
+    //   }}
+      >
             <Provider store={appStore}>
                 <BrowserRouter basename="/">
                     <Routes>
@@ -25,6 +33,9 @@ function App() {
                     </Routes>
                 </BrowserRouter>
             </Provider>
+        </div>
+        
+            
         </>
     );
 }

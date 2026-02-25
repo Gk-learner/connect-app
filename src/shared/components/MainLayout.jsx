@@ -1,10 +1,11 @@
 import {useEffect} from "react";
+import React from "react"; 
 import {Outlet, useNavigate} from "react-router-dom";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
-import {BASE_URL} from "../utils/constants";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+import {BASE_URL} from "../../utils/constants";
 import {useDispatch} from "react-redux";
-import {addUser} from "../utils/userSlice";
+import {addUser} from "../../features/auth/userSlice";
 import {useSelector} from "react-redux";
 
 const Body = () => {
