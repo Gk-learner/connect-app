@@ -41,6 +41,7 @@ const Requests = () => {
       });
 
       const data = await res.json();
+      console.log(data)
       dispatch(addRequests(data.data));
     } catch (err) {
       console.error("Error fetching requests:", err);

@@ -28,8 +28,7 @@ const Login = () => {
             });
 
             const res = await response.json();
-
-
+            console.log(res)
             if (res._id) {
                 dispatch(addUser(res));
                 navigate("/feed");

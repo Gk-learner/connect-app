@@ -3,6 +3,7 @@ import {BASE_URL} from "../../utils/constants";
 import {useDispatch} from "react-redux";
 import {addUser} from "../../features/auth/userSlice";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 const Card = (feed) => {
         const navigate = useNavigate();
@@ -53,10 +54,10 @@ const Card = (feed) => {
     return (
         <div className="flex flex-wrap justify-between gap-4 m-4">
             {feed.feed.map((cardData) => (
-                <div className="card bg-base-100 w-1/4 shadow-xl" key={cardData._id}>
+                <div className="card bg-base-100 w-1/6 shadow-xl" key={cardData._id}>
                     <figure>
                         <img
-                            className="w-4/5"
+                            className="w-3/5"
                             src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
                             alt={cardData.firstName || "User Image"}
                         />
@@ -64,12 +65,11 @@ const Card = (feed) => {
                     <div className="card-body">
                         <h2 className="card-title">{cardData.firstName || "Unnamed User"}</h2>
                         <div className="card-actions justify-end">
-                            <button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>
-                                Ignore
-                            </button>
-                            <button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
+                            <Button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>Ignore</Button>
+                           
+                            <Button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
                                 Interested
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
