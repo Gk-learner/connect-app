@@ -49,12 +49,8 @@ app.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
     const user = await User.findOne({ emailId });
-    // console.log("user", user);
     const verifiedPassword = await user.validatePassword(password);
-    // console.log("gagan", verifiedPassord);
     if (verifiedPassword) {
-      //create a JWT token
-
       const token = await user.getJWT();
       res.cookie("token", token);
 
@@ -88,15 +84,15 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-app.post("/request", userAuth, async (req, res) => {
-  try {
-    const user = req.user;
-        const { emailId, password } = req.body;
-    res.send(user.firstName + " " + 'has sent a connection request');
-  } catch (err) {
-    res.status(404).send("something went wrong");
-  }
-});
+// app.post("/request", userAuth, async (req, res) => {
+//   try {
+//     const user = req.user;
+//         const { emailId, password } = req.body;
+//     res.send(user.firstName + " " + 'has sent a connection request');
+//   } catch (err) {
+//     res.status(404).send("something went wrong");
+//   }
+// });
 
 app.patch("/updateUser", async (req, res) => {
   try {
