@@ -10,14 +10,16 @@ const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("./middlewares/auth");
 const userRouter = require("./routes/user");
-
-app.use(express.json());
-app.use(cookieParser());
 app.use(cors({
   origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "PATCH","DELETE"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+
 }));
+app.use(express.json()); //to fetch json data from server/postman and send it as obj to client
+app.use(cookieParser());
+
 app.use("/request", requestRouter);
 app.use("/user",userRouter)
 app.options("*", cors());
@@ -52,7 +54,10 @@ app.post("/login", async (req, res) => {
     const verifiedPassword = await user.validatePassword(password);
     if (verifiedPassword) {
       const token = await user.getJWT();
-      res.cookie("token", token);
+      res.cookie("token", token, {
+  httpOnly: true,
+  sameSite: "lax",
+});
 
 return res.json(user);   
    } else {
@@ -94,17 +99,23 @@ app.get("/feed", async (req, res) => {
 //   }
 // });
 
-app.patch("/updateUser", async (req, res) => {
+app.patch("/updateUser", userAuth, async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.user._id;
     const data = req.body;
-    const user = await User.findByIdAndUpdate({ _id: userId }, data);
-    // console.log(user);
-    res.send("updated!!");
-  } catch (err) {
-    // console.log("Error:", err.message);
-    res.status(500).send("Error updating users");
-  }
+    console.log(data)
+
+    const user = await User.findByIdAndUpdate({ _id: userId }, data,{
+      returnDocument:"after",
+      runValidators: "true"
+    });
+        console.log(user)
+
+    return res.json(user);   
+
+      } catch (err) {
+  res.status(500).send("Error updating users: " + err.message);
+}
 });
 
 app.delete("/deleteUser", async (req, res) => {
