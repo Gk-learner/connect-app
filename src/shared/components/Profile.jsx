@@ -1,10 +1,11 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addUser} from "../../features/auth/userSlice";
 import {BASE_URL} from "../../utils/constants/index";
 
 const Profile = () => {
     const user = useSelector((store) => store.user);
+    console.log('user', user)
     const [firstName, setFirstName] = useState(user?.firstName);
     const [lastName, setLastName] = useState(user?.lastName);
     const [gender, setGender] = useState(user?.gender);
@@ -24,12 +25,9 @@ const Profile = () => {
                 gender,
                 age,
                 skills,
-                photoUrl,
+                photoUrl
             };
-
-            console.log("Payload:", payload);
-
-            const response = await fetch(`${BASE_URL}profile/edit`, {
+            const response = await fetch(`${BASE_URL}updateUser`, {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
@@ -38,12 +36,11 @@ const Profile = () => {
                 body: JSON.stringify(payload),
             });
 
-            const res = await response.json();
-            console.log("API Response:", res);
-
-            if (res.data) {
-                dispatch(addUser(res.data));
-                // alert("Profile updated successfully!");
+            const res = await response;
+            const data = await res.json();
+            if (res.ok) {
+                dispatch(addUser(data));
+                alert("Profile updated successfully!");
             } else {
                 console.error("Error:", res.message);
                 alert("Failed to update profile.");
@@ -56,7 +53,7 @@ const Profile = () => {
     return (
         user && (
             <div className="w-80 mt-4 mx-auto overflow-scroll pb-20">
-                <h1 className="text-center mb-10 ">Edit Profile</h1>
+                {/* <h1 className="text-center mb-10 ">Edit Profile</h1> */}
                 <label>First Name</label>
                 <label className="input input-bordered flex items-center gap-2 mb-4">
                     <svg
