@@ -4,9 +4,12 @@ import {useDispatch} from "react-redux";
 import {addUser} from "../../features/auth/userSlice";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-
+import Modal from "./Modal";
+import { useState } from "react";
 const Card = (feed) => {
         const navigate = useNavigate();
+          const [open, setOpen] = useState(false);
+
     
     const dispatch = useDispatch();
 
@@ -30,13 +33,11 @@ const Card = (feed) => {
     }
   );
   if (!response.ok) {
-        alert('request already Sent')
-
+setOpen(true) 
     throw new Error(`Error: ${response.status}`);
   }
   if (response.ok){
-    alert('request Sent')
-  }
+setOpen(true)  }
 
   const res = await response.json();
   console.log("API Response:", res);
@@ -66,7 +67,13 @@ const Card = (feed) => {
                         <h2 className="card-title">{cardData.firstName || "Unnamed User"}</h2>
                         <div className="card-actions justify-end">
                             <Button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>Ignore</Button>
-                           
+                          {open ? <Modal
+        isOpen={open}
+        type="ignore"
+        title="Awesome!!"
+        message="Request sent  successfully."
+        onClose={() => setOpen(false)}
+      /> : null}
                             <Button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
                                 Interested
                             </Button>
