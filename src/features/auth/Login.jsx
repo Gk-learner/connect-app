@@ -18,7 +18,7 @@ const Login = () => {
                 password: password,
             };
 
-            const response = await fetch(`${BASE_URL}login`, {
+            const response = await fetch(`${BASE_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

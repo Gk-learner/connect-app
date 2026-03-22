@@ -14,7 +14,7 @@ const NavBar = () => {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${BASE_URL}logout`, {
+            await fetch(`${BASE_URL}/logout`, {
                 method: "POST",
 
                 credentials: "include",

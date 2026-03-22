@@ -12,7 +12,7 @@ const Connections = () => {
 
     const fetchConnections = async () => {
         try {
-            const response = await fetch(`${BASE_URL}user/connections`, {
+            const response = await fetch(`${BASE_URL}/user/connections`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

@@ -18,7 +18,7 @@ const Body = () => {
             return;
         }
         try {
-            const response = await fetch(`${BASE_URL}profile/view`, {
+            const response = await fetch(`${BASE_URL}/profile/view`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

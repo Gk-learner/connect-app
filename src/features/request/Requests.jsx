@@ -25,7 +25,7 @@ const Requests = () => {
                 alert("Failed to update profile.");
     }
   };
-  // const response = await fetch(`${BASE_URL}profile/edit`, {
+  // const response = await fetch(`${BASE_URL}/profile/edit`, {
   //               method: "PATCH",
   //               credentials: "include",
   //               headers: {

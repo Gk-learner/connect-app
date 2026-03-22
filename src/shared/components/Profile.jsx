@@ -27,7 +27,7 @@ const Profile = () => {
                 skills,
                 photoUrl
             };
-            const response = await fetch(`${BASE_URL}updateUser`, {
+            const response = await fetch(`${BASE_URL}/updateUser`, {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
