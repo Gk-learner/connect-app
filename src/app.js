@@ -109,8 +109,6 @@ app.patch("/updateUser", userAuth, async (req, res) => {
       returnDocument:"after",
       runValidators: "true"
     });
-        console.log(user)
-
     return res.json(user);   
 
       } catch (err) {
