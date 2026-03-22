@@ -10,7 +10,7 @@ const Feed = () => {
     const user = useSelector((store) => store.user);
     const fetchUser = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/feed`, {
+            const response = await fetch(`${BASE_URL}feed`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

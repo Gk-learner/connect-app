@@ -11,7 +11,7 @@ const Requests = () => {
   const reviewRequest = async (status, _id) => {
     try {
       const response = fetch(
-        BASE_URL + "/request/review/" + status + "/" + _id,
+        BASE_URL + "request/review/" + status + "/" + _id,
         {
           method: "post",
           credentials: "include",
