@@ -36,7 +36,7 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch(BASE_URL + "/user/requests/received", {
+      const res = await fetch(BASE_URL + "user/requests/received", {
         withCredentials: true,
       });
 

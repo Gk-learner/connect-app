@@ -26,7 +26,7 @@ const Card = (feed) => {
 
         try {
   const response = await fetch(
-    `${BASE_URL}/request/send/${status}/${user}`,
+    `${BASE_URL}request/send/${status}/${user}`,
     {
       method: "POST",
       credentials: "include",   
