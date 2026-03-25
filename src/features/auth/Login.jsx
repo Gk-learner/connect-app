@@ -9,8 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState("pkour");
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = useSelector((store) => store.user);
-    console.log(user);
+   
     const handleLogin = async () => {
         try {
             const obj = {
@@ -28,9 +27,8 @@ const Login = () => {
             });
 
             const res = await response.json();
-            console.log(res)
-            if (res._id) {
-                dispatch(addUser(res));
+            if (response.ok) {
+                dispatch(addUser( res));
                 navigate("/feed");
             }
         } catch (err) {

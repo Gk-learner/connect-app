@@ -21,7 +21,6 @@ const Connections = () => {
             });
 
             const res = await response.json();
-            console.log(res);
             setConnections(res);
             dispatch(addConnections(res));
         } catch (err) {

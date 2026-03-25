@@ -8,8 +8,12 @@ import Modal from "./Modal";
 import { useState } from "react";
 const Card = (feed) => {
         const navigate = useNavigate();
-          const [open, setOpen] = useState(false);
-
+const [open, setOpen] = useState(false);
+const [modalData, setModalData] = useState({
+  title: "",
+  message: "",
+  type: ""
+});
     
     const dispatch = useDispatch();
 
@@ -32,15 +36,25 @@ const Card = (feed) => {
       credentials: "include",   
     }
   );
-  if (!response.ok) {
-setOpen(true) 
-    throw new Error(`Error: ${response.status}`);
-  }
-  if (response.ok){
-setOpen(true)  }
+ if (response.status === 400) {
+  setModalData({
+    title: "Oops!!",
+    message: "You have already sent a request to this user.",
+    type: "error"
+  });
+  setOpen(true);
+} else if (response.status === 200) {
+  setModalData({
+    title: "Awesome!!",
+    message: "Request sent successfully.",
+    type: "success"
+  });
+  setOpen(true);
+}
+
+
 
   const res = await response.json();
-  console.log("API Response:", res);
   dispatch(addUser(res.data));
   
 }  catch (err) {
@@ -67,13 +81,15 @@ setOpen(true)  }
                         <h2 className="card-title">{cardData.firstName || "Unnamed User"}</h2>
                         <div className="card-actions justify-end">
                             <Button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>Ignore</Button>
-                          {open ? <Modal
-        isOpen={open}
-        type="ignore"
-        title="Awesome!!"
-        message="Request sent  successfully."
-        onClose={() => setOpen(false)}
-      /> : null}
+                         {open && (
+  <Modal
+    isOpen={open}
+    type={modalData.type}
+    title={modalData.title}
+    message={modalData.message}
+    onClose={() => setOpen(false)}
+  />
+)}
                             <Button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
                                 Interested
                             </Button>

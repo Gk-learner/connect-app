@@ -1,24 +1,44 @@
 import Body from "../shared/components/MainLayout.jsx";
-import React from "react"; 
+import React,{useEffect} from "react"; 
+import { addUser,removeUser } from "../features/auth/userSlice.js";
 import Login from "../features/auth/Login.jsx";
 import Profile from "../shared/components/Profile.jsx";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {Provider} from "react-redux";
-import appStore from "../utils/appStore.js";
+
 import Feed from "../features/feed/Feed.jsx";
 import Connections from "../features/connection/Connections.jsx";
 import Requests from "../features/request/Requests.jsx";
+import { BASE_URL } from "../utils/constants/index.js";
+import { useDispatch } from "react-redux";
 function App() {
+     const dispatch = useDispatch();
+
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+     const res = await fetch(`${BASE_URL}profile`, {
+  method: "GET",
+  credentials: "include",
+});
+
+const data = await res.json();
+if (res.ok && data.user) {
+  dispatch(addUser(data.user)); 
+} else {
+  dispatch(removeUser());
+}
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      dispatch(removeUser());
+    }
+  };
+
+  fetchUser();
+}, []);
+
     return (
         <>
-        <div  
-    //     style={{
-    //     backgroundImage: "url('/homepagePic.png')",
-    //     backgroundSize: "cover",
-    //     backgroundPosition: "center",
-    //   }}
-      >
-            <Provider store={appStore}>
+        <div >
                 <BrowserRouter basename="/">
                     <Routes>
                         <Route path="/" element={<Body />}>
@@ -32,7 +52,6 @@ function App() {
                         </Route>
                     </Routes>
                 </BrowserRouter>
-            </Provider>
         </div>
         
             

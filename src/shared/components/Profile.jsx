@@ -5,7 +5,6 @@ import {BASE_URL} from "../../utils/constants/index";
 
 const Profile = () => {
     const user = useSelector((store) => store.user);
-    console.log('user', user)
     const [firstName, setFirstName] = useState(user?.firstName);
     const [lastName, setLastName] = useState(user?.lastName);
     const [gender, setGender] = useState(user?.gender);
@@ -53,7 +52,6 @@ const Profile = () => {
     return (
         user && (
             <div className="w-80 mt-4 mx-auto overflow-scroll pb-20">
-                {/* <h1 className="text-center mb-10 ">Edit Profile</h1> */}
                 <label>First Name</label>
                 <label className="input input-bordered flex items-center gap-2 mb-4">
                     <svg
@@ -68,7 +66,7 @@ const Profile = () => {
                     <input
                         type="text"
                         className="grow"
-                        placeholder="First name"
+                        placeholder={user?.user?.firstName || "First Name"}
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
@@ -78,7 +76,7 @@ const Profile = () => {
                     <input
                         type="text"
                         className="grow"
-                        placeholder="Last Name"
+                        placeholder={user?.user?.lastName || "Last Name"}
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                     />
@@ -88,7 +86,7 @@ const Profile = () => {
                     <input
                         type="text"
                         className="grow"
-                        placeholder="Gender"
+                        placeholder={user?.user?.gender || "Gender"}
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
                     />
@@ -98,7 +96,7 @@ const Profile = () => {
                     <input
                         type="text"
                         className="grow"
-                        placeholder="Age"
+                        placeholder={user?.user?.age || "Age"}
                         value={age}
                         onChange={(e) => setAge(e.target.value)}
                     />
@@ -108,7 +106,7 @@ const Profile = () => {
                     <input
                         type=""
                         className="grow"
-                        placeholder="PhotoUrl"
+                        placeholder={user?.user?.photoUrl || "Photo URL"}
                         value={photoUrl}
                         onChange={(e) => setPhotoUrl(e.target.value)}
                     />
@@ -118,7 +116,7 @@ const Profile = () => {
                     <input
                         type=""
                         className="grow"
-                        placeholder="Skills"
+                        placeholder={user?.user?.skills || "Skills"}
                         value={skills}
                         onChange={(e) => setSkills(e.target.value)}
                     />

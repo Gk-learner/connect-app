@@ -1,4 +1,4 @@
-import React from "react"; 
+import React,{useEffect} from "react"; 
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
@@ -8,10 +8,9 @@ import {useDispatch} from "react-redux";
 import {removeUser} from "../../features/auth/userSlice";
 
 const NavBar = () => {
-    const user = useSelector((store) => store.user);
+const { user, isLoading } = useSelector((store) => store.user);  
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const handleLogout = async () => {
         try {
             await fetch(`${BASE_URL}/logout`, {
@@ -22,13 +21,21 @@ const NavBar = () => {
             dispatch(removeUser(user));
             localStorage.removeItem("user"); // Clear user from localStorage
             navigate("/login");
-
-            // console.log(user);
         } catch (err) {
             console.log(err);
         }
     };
+    if (isLoading) {
+  return (
+    <div className="navbar bg-base-300">
+      <div className="flex-1">
+        <p>Loading...</p>
+      </div>
+    </div>
+  );
+}
     return (
+        
         <div className="navbar bg-base-300">
             <div className="flex-1">
                 <Link to="/feed" className="btn btn-ghost text-xl">
@@ -56,7 +63,7 @@ const NavBar = () => {
                             >
                                 <li>
                                     <Link to="/profile" className="justify-between">
-                                        Profile
+                                        Edit Profile
                                         <span className="badge">Edit</span>
                                     </Link>
                                 </li>

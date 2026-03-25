@@ -19,7 +19,6 @@ const Feed = () => {
             });
 
             const res = await response.json();
-            console.log(res);
             dispatch(addFeed(res));
         } catch (err) {
             console.log(err.message);

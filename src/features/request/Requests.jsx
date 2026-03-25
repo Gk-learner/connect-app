@@ -18,7 +18,6 @@ const Requests = () => {
         }
       );
          const res = await response.json();
-            console.log("API Response:", res);
       dispatch(removeRequest(_id));
     } catch (err) {
         console.error("Error:", err.message);
@@ -41,7 +40,6 @@ const Requests = () => {
       });
 
       const data = await res.json();
-      console.log(data)
       dispatch(addRequests(data.data));
     } catch (err) {
       console.error("Error fetching requests:", err);
