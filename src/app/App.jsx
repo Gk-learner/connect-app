@@ -8,6 +8,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Feed from "../features/feed/Feed.jsx";
 import Connections from "../features/connection/Connections.jsx";
 import Requests from "../features/request/Requests.jsx";
+import Home from "../features/home/Home.jsx";
 import { BASE_URL } from "../utils/constants/index.js";
 import { useDispatch } from "react-redux";
 function App() {
@@ -42,6 +43,7 @@ if (res.ok && data.user) {
                 <BrowserRouter basename="/">
                     <Routes>
                         <Route path="/" element={<Body />}>
+                            <Route index element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/feed" element={<Feed />} />
