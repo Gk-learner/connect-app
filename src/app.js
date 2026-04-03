@@ -69,16 +69,12 @@ return res.json(user);
 });
 
 app.get("/profile", userAuth, async (req, res) => {
-  console.log("profile route is hit");
   const cookies = req.cookies;
   const { token } = cookies;
   const decodedMessage = await jwt.verify(token, "proCookie2024");
   const { _id } = decodedMessage;
-  console.log("user is" + " " + _id);
   const user = await User.findById({ _id });
-  console.log("user is" + " " + user.firstName);
-  res.send("user is" + " " + user.firstName);
-});
+res.json({ user });});
 
 app.get("/feed", async (req, res) => {
   try {
