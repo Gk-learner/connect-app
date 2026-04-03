@@ -40,7 +40,7 @@ const Home = () => {
                         relationships — all in a calm, focused experience.
                     </p>
 
-                    <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+                    <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
                         {user ? (
                             <>
                                 <Link to="/feed" className="btn btn-primary btn-lg min-w-[200px] shadow-lg shadow-primary/25">
@@ -52,10 +52,13 @@ const Home = () => {
                             </>
                         ) : (
                             <>
-                                <Link to="/login" className="btn btn-primary btn-lg min-w-[200px] shadow-lg shadow-primary/25">
-                                    Get started
+                                <Link to="/signup" className="btn btn-primary btn-lg min-w-[200px] shadow-lg shadow-primary/25">
+                                    Create account
                                 </Link>
-                                <a href="#features" className="btn btn-ghost btn-lg min-w-[200px]">
+                                <Link to="/login" className="btn btn-outline btn-lg min-w-[200px]">
+                                    Sign in
+                                </Link>
+                                <a href="#features" className="btn btn-ghost btn-lg min-w-[200px] max-sm:w-full">
                                     See how it works
                                 </a>
                             </>
@@ -144,9 +147,14 @@ const Home = () => {
                                 </Link>
                             </div>
                         ) : (
-                            <Link to="/login" className="btn btn-primary btn-wide shadow-lg">
-                                Sign in
-                            </Link>
+                            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
+                                <Link to="/signup" className="btn btn-primary btn-wide shadow-lg">
+                                    Sign up
+                                </Link>
+                                <Link to="/login" className="btn btn-outline btn-wide">
+                                    Sign in
+                                </Link>
+                            </div>
                         )}
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import Body from "../shared/components/MainLayout.jsx";
 import React,{useEffect} from "react"; 
 import { addUser,removeUser } from "../features/auth/userSlice.js";
 import Login from "../features/auth/Login.jsx";
+import Signup from "../features/auth/Signup.jsx";
 import Profile from "../shared/components/Profile.jsx";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
@@ -46,6 +47,7 @@ if (res.ok && data.user) {
                         <Route path="/" element={<Body />}>
                             <Route index element={<Home />} />
                             <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<Signup />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/feed" element={<Feed />} />
                             <Route path="/connections" element={<Connections />} />

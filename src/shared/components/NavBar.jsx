@@ -258,9 +258,12 @@ const NavBar = () => {
           </div>
         </div>
       ) : (
-        <div className="flex-none">
-          <Link to="/login" className="btn">
-            Login
+        <div className="flex-none flex gap-2">
+          <Link to="/login" className="btn btn-ghost btn-sm">
+            Sign in
+          </Link>
+          <Link to="/signup" className="btn btn-primary btn-sm">
+            Sign up
           </Link>
         </div>
       )}
