@@ -9,6 +9,7 @@ import Feed from "../features/feed/Feed.jsx";
 import Connections from "../features/connection/Connections.jsx";
 import Requests from "../features/request/Requests.jsx";
 import Home from "../features/home/Home.jsx";
+import Chat from "../features/chat/Chat.jsx";
 import { BASE_URL } from "../utils/constants/index.js";
 import { useDispatch } from "react-redux";
 function App() {
@@ -48,6 +49,7 @@ if (res.ok && data.user) {
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/feed" element={<Feed />} />
                             <Route path="/connections" element={<Connections />} />
+                            <Route path="/chat/:userId" element={<Chat />} />
                             <Route path="/requests" element={<Requests />}/>
 
 

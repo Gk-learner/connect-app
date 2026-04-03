@@ -1,18 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const requestSlice = createSlice({
-  name: "request",
-  initialState: null,
+  name: "requests",
+  initialState: {
+    received: [],
+    sent: [],
+  },
   reducers: {
-    addRequests: (state, action) => {
-      return action.payload;
+    setReceivedRequests: (state, action) => {
+      state.received = Array.isArray(action.payload) ? action.payload : [];
     },
-    removeRequest: () => {
-      return null;
+    setSentRequests: (state, action) => {
+      state.sent = Array.isArray(action.payload) ? action.payload : [];
+    },
+    removeReceivedRequest: (state, action) => {
+      const id = action.payload;
+      state.received = state.received.filter((r) => r._id !== id);
+    },
+    removeSentRequest: (state, action) => {
+      const id = action.payload;
+      state.sent = state.sent.filter((r) => r._id !== id);
     },
   },
 });
 
-export const { addRequests, removeRequest } = requestSlice.actions;
+export const {
+  setReceivedRequests,
+  setSentRequests,
+  removeReceivedRequest,
+  removeSentRequest,
+} = requestSlice.actions;
 
 export default requestSlice.reducer;

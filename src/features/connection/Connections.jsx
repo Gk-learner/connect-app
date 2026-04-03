@@ -1,5 +1,5 @@
-import React from "react"; 
-import {useNavigate} from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {BASE_URL} from "../../utils/constants";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
@@ -12,7 +12,7 @@ const Connections = () => {
 
     const fetchConnections = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/user/connections`, {
+            const response = await fetch(`${BASE_URL}user/connections`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -21,8 +21,9 @@ const Connections = () => {
             });
 
             const res = await response.json();
-            setConnections(res);
-            dispatch(addConnections(res));
+            const list = res.data ?? [];
+            setConnections(list);
+            dispatch(addConnections(list));
         } catch (err) {
             if (err.status === 401) {
                 navigate("/login");
@@ -33,20 +34,49 @@ const Connections = () => {
     useEffect(() => {
         fetchConnections();
     }, []);
+
+    if (!connections.length) {
+        return (
+            <p className="text-center my-12 text-base-content/70">
+                No connections yet. Accept requests from the{" "}
+                <Link to="/requests" className="link link-primary">
+                    Requests
+                </Link>{" "}
+                page, then you can message people here.
+            </p>
+        );
+    }
+
     return (
-        <div className="flex flex-wrap justify-center gap-4">
-            {connections.map((cardData, index) => (
-                <div className="card bg-base-100 w-1/4 shadow-xl" key={index}>
-                    <figure>
+        <div className="flex flex-wrap justify-center gap-4 px-2">
+            {connections.map((cardData) => (
+                <div
+                  className="card bg-base-100 w-full sm:w-[280px] shadow-xl"
+                  key={cardData._id}
+                >
+                    <figure className="px-4 pt-4">
                         <img
-                            className="w-4/5"
-                            src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1733085801~exp=1733089401~hmac=3565f50174ad8dac985db4b15df1d753e211a6fef5be94da951673978555de97&w=740"
+                            className="rounded-xl w-full h-40 object-cover"
+                            src={
+                              cardData.photoUrl ||
+                              "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
+                            }
                             alt={cardData.firstName || "Card Image"}
                         />
                     </figure>
                     <div className="card-body">
-                        <h2 className="card-title">{cardData.firstName}</h2>
-                       
+                        <h2 className="card-title">
+                          {cardData.firstName} {cardData.lastName ?? ""}
+                        </h2>
+                        <div className="card-actions justify-end mt-2">
+                          <Link
+                            to={`/chat/${cardData._id}`}
+                            state={{ peer: cardData }}
+                            className="btn btn-primary btn-sm"
+                          >
+                            Message
+                          </Link>
+                        </div>
                     </div>
                 </div>
             ))}

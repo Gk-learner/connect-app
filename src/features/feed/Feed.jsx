@@ -7,7 +7,7 @@ import Card from "../../shared/components/Card";
 const Feed = () => {
     const dispatch = useDispatch();
     const feed = useSelector((store) => store.feed);
-    const user = useSelector((store) => store.user);
+    console.log(feed);
     const fetchUser = async () => {
         try {
             const response = await fetch(`${BASE_URL}feed`, {
@@ -19,7 +19,7 @@ const Feed = () => {
             });
 
             const res = await response.json();
-            dispatch(addFeed(res));
+            dispatch(addFeed(res ?? []));
         } catch (err) {
             console.log(err.message);
         }

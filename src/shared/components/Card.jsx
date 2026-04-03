@@ -1,7 +1,8 @@
 import React from "react"; 
 import {BASE_URL} from "../../utils/constants";
-import {useDispatch} from "react-redux";
-import {addUser} from "../../features/auth/userSlice";
+import { useDispatch } from "react-redux";
+import { addFeed } from "../../features/feed/feedSlice";
+import { refreshRequests } from "../../features/request/refreshRequests";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Modal from "./Modal";
@@ -14,9 +15,7 @@ const [modalData, setModalData] = useState({
   message: "",
   type: ""
 });
-    
     const dispatch = useDispatch();
-
     if (!feed?.feed?.length) {
         return <p>No data available</p>;
     }
@@ -50,13 +49,13 @@ const [modalData, setModalData] = useState({
     type: "success"
   });
   setOpen(true);
+  dispatch(
+    addFeed(feed.feed.filter((u) => u._id !== cardData._id))
+  );
+  void refreshRequests(dispatch);
 }
 
-
-
-  const res = await response.json();
-  dispatch(addUser(res.data));
-  
+  await response.json();
 }  catch (err) {
             console.error("Failed to send interest:", err);
             if (err.message.includes("401")) {
