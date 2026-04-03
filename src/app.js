@@ -26,24 +26,24 @@ app.options("*", cors());
 
 app.post("/signUp", async (req, res) => {
   try {
-    //Validation of data
-
     validateSignUpData(req);
 
     const { firstName, lastName, emailId, password } = req.body;
-    //encrypt the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       firstName,
-      lastName,
+      lastName: lastName || undefined,
       emailId,
       password: hashedPassword,
     });
     await user.save();
-    res.send("user saved!");
+    res.status(201).json({ message: "Account created. You can sign in." });
   } catch (err) {
-    console.log("Error saving data" + " " + "hey", err.message);
-    res.status(400).send(err.message);
+    if (err.code === 11000) {
+      return res.status(400).json({ message: "An account with this email already exists." });
+    }
+    console.log("signUp error", err.message);
+    res.status(400).json({ message: err.message || "Sign up failed." });
   }
 });
 
