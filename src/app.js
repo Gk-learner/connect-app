@@ -71,7 +71,7 @@ return res.json(user);
 app.get("/profile", userAuth, async (req, res) => {
   const cookies = req.cookies;
   const { token } = cookies;
-  const decodedMessage = await jwt.verify(token, "proCookie2024");
+  const decodedMessage = await jwt.verify(token, JWT_SECRET);
   const { _id } = decodedMessage;
   const user = await User.findById({ _id });
 res.json({ user });});

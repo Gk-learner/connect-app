@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema(
 userSchema.methods.getJWT = async function () {
   const user = this;
 
-  const token = await jwt.sign({ _id: user._id }, "proCookie2024", {
+  const token = await jwt.sign({ _id: user._id }, JWT_SECRET {
     expiresIn: "7d",
   });
 
