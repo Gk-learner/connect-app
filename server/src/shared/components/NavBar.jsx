@@ -13,7 +13,6 @@ import { refreshUnreadMessages } from "../../features/inbox/refreshUnreadMessage
 import { setInboxSummary } from "../../features/inbox/inboxSlice";
 
 function initialsFromUser(u) {
-  console.log(u)
   if (!u) return "?";
   const first = (u.firstName || "").trim();
   const last = (u.lastName || "").trim();
@@ -27,6 +26,7 @@ function initialsFromUser(u) {
 
 const NavBar = () => {
   const { user, isLoading } = useSelector((store) => store.user);
+  console.log(user)
   const { received, sent } = useSelector((store) => store.requests);
   const { totalUnread, threads } = useSelector((store) => store.inbox);
   const navigate = useNavigate();

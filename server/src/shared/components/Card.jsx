@@ -1,14 +1,12 @@
+import React from "react"; 
 import {BASE_URL} from "../../utils/constants";
 import { useDispatch } from "react-redux";
 import { addFeed } from "../../features/feed/feedSlice";
 import { refreshRequests } from "../../features/request/refreshRequests";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-import styles from "../../../public/button.module.css";
-import { FaHeart } from 'react-icons/fa';
-
 import Modal from "./Modal";
-import React, { useState } from "react";
+import { useState } from "react";
 const Card = (feed) => {
         const navigate = useNavigate();
 const [open, setOpen] = useState(false);
@@ -39,7 +37,7 @@ const [modalData, setModalData] = useState({
   );
  if (response.status === 400) {
   setModalData({
-    title: "Hey!",
+    title: "Oops!!",
     message: "You have already sent a request to this user.",
     type: "error"
   });
@@ -70,7 +68,7 @@ const [modalData, setModalData] = useState({
     return (
         <div className="flex flex-wrap justify-between gap-4 m-4">
             {feed.feed.map((cardData) => (
-                <div className="card bg-base-100 w-1/6 shadow-2xl" key={cardData._id}>
+                <div className="card bg-base-100 w-1/6 shadow-xl" key={cardData._id}>
                     <figure>
                         <img
                             className="w-3/5"
@@ -81,9 +79,7 @@ const [modalData, setModalData] = useState({
                     <div className="card-body">
                         <h2 className="card-title">{cardData.firstName || "Unnamed User"}</h2>
                         <div className="card-actions justify-end">
-                            <Button 
-                              className={styles.customButton}
-                              onClick={() => sendInterest(cardData, "ignored")}>Ignore</Button>
+                            <Button className="btn btn-warning" onClick={() => sendInterest(cardData, "ignored")}>Ignore</Button>
                          {open && (
   <Modal
     isOpen={open}
@@ -93,10 +89,7 @@ const [modalData, setModalData] = useState({
     onClose={() => setOpen(false)}
   />
 )}
-                            <Button 
-                            className={styles.customButton}
-                            onClick={() => sendInterest(cardData, "interested")}>
-                              <FaHeart style={{ marginRight: '0.5rem' }} />
+                            <Button className="btn btn-success" onClick={() => sendInterest(cardData, "interested")}>
                                 Interested
                             </Button>
                         </div>

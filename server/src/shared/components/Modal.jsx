@@ -30,7 +30,7 @@ import React from 'react';
 // message, and accepts arbitrary children for custom content.
 
 export default function Modal({
-  isOpen = true,
+  isOpen = false,
   onClose = () => {},
   type = 'ignored' | 'interested', // 'success' | 'error' | 'warning' | 'info' | 'default'
   title,
@@ -57,6 +57,7 @@ export default function Modal({
         className="absolute inset-0 bg-gradient-to-b opacity-50"
         onClick={onClose}
       />
+
       <div
         className={`relative max-w-md w-full p-6 rounded-lg shadow-lg ${colourClasses} ${className}`}
       >

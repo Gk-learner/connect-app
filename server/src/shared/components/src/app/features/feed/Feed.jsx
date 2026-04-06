@@ -7,6 +7,7 @@ import Card from "../../shared/components/Card";
 const Feed = () => {
     const dispatch = useDispatch();
     const feed = useSelector((store) => store.feed);
+    console.log(feed);
     const fetchUser = async () => {
         try {
             const response = await fetch(`${BASE_URL}feed`, {

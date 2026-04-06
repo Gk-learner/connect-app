@@ -36,6 +36,7 @@ const Login = () => {
 
       if (response.ok) {
         dispatch(addUser(data));
+        navigate("/feed");
         return;
       }
 
@@ -65,12 +66,12 @@ const Login = () => {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          {/* <Link
+          <Link
             to="/"
             className="inline-flex items-center gap-2 text-lg font-bold tracking-tight hover:opacity-80 transition-opacity"
           >
             <span aria-hidden>🤝</span> Connect App
-          </Link> */}
+          </Link>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-6 tracking-tight">
             Welcome back
           </h1>

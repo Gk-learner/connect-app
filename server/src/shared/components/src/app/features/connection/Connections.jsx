@@ -51,7 +51,7 @@ const Connections = () => {
         <div className="flex flex-wrap justify-center gap-4 px-2">
             {connections.map((cardData) => (
                 <div
-                  className="card bg-base-100 w-full sm:w-[280px] shadow-2xl"
+                  className="card bg-base-100 w-full sm:w-[280px] shadow-xl"
                   key={cardData._id}
                 >
                     <figure className="px-4 pt-4">
