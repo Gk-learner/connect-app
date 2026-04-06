@@ -36,6 +36,7 @@ const Login = () => {
 
       if (response.ok) {
         dispatch(addUser(data));
+        navigate("/requests");
         return;
       }
 
